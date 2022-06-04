@@ -5,25 +5,11 @@ const path = require("path");
 const db = require("./db/db.json");
 // setting port for listening
 const PORT = process.env.PORT || 3001;
-
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json());
 app.use(express.static("public"));
-
-// creating route to index.html
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/index.html"));
-});
-
-// creating route to notes.html
-app.get("/notes", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/notes.html"));
-});
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/index.html"));
-});
 
 // receive and save new note on the request body then add it to db.json and respond the new note to client
 app.post("/api/notes", (req, res) => {
@@ -54,6 +40,19 @@ app.delete("/api/notes/:id", (req, res) => {
   });
   fs.writeFileSync("./db/db.json", JSON.stringify(noteList));
   res.json(noteList);
+});
+
+// creating route to index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+});
+
+// creating route to notes.html
+app.get("/notes", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/notes.html"));
+});
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 // listening to the port after deployed
